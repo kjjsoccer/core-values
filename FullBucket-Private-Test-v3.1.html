@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Full Bucket — Private Test V3.1</title>
+<style>
+:root{--ink:#17221c;--muted:#657067;--paper:#f7f4ed;--card:#fff;--line:#d9ded8;--accent:#315f49;--soft:#e8f0eb;--fixed:#d9dde3;--bucket:#dcebdd;--open:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:760px;margin:auto;padding:18px 16px 70px}.brand{font-weight:900;letter-spacing:.08em;font-size:19px}.tag{font-size:13px;color:var(--muted);margin-bottom:10px}
+.progress{height:5px;background:#e5e3dc;border-radius:8px;overflow:hidden;margin:12px 0 24px}.progress>div{height:100%;background:var(--accent);width:0}
+.screen{display:none}.screen.active{display:block}h1{font-size:32px;line-height:1.08;margin:5px 0 12px}h2{font-size:22px;margin:20px 0 8px}p{margin:8px 0 14px}.lead{font-size:19px}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px 14px;margin:10px 0;background:var(--accent);color:white;font-weight:800;font-size:15px;letter-spacing:.02em}
+.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.small{padding:10px;margin:6px 0}.btn:disabled{opacity:.4}.eyebrow{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:800;color:var(--accent)}
+.tip,.panel,.kenny{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0}.kenny{background:var(--soft);border-color:#cdded3}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}.card{min-height:58px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;font-weight:700;font-size:16px;color:var(--ink)}
+.card.on{background:var(--accent);color:white;border-color:var(--accent)}.count{position:sticky;top:0;z-index:4;background:rgba(247,244,237,.96);padding:8px 0;font-weight:800}
+input,select,textarea{width:100%;font:inherit;border:1px solid #cfd5cf;border-radius:10px;padding:12px;background:#fff;color:var(--ink);margin:5px 0 12px}
+textarea{min-height:95px}.label{font-weight:800;font-size:14px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;margin:9px 0}.choice.on{border:2px solid var(--accent);background:var(--soft)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{padding:7px 10px;border-radius:999px;background:#eef0ed;font-size:14px}.chip.on{background:var(--accent);color:white}
+.activity{border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;margin:10px 0}.activity .x{float:right;border:0;background:none;font-size:20px}
+.week{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:white}.week table{border-collapse:collapse;width:100%;min-width:610px;font-size:12px}.week th,.week td{border:1px solid #e5e7e3;padding:5px;text-align:center}.fixed{background:var(--fixed)}.bucket{background:var(--bucket)}.open{background:var(--open)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:13px;margin:8px 0}.dot{display:inline-block;width:12px;height:12px;border:1px solid #bbb;margin-right:4px;vertical-align:-1px}.dot.fixed{background:var(--fixed)}.dot.bucket{background:var(--bucket)}.dot.open{background:#fff}
+.small{font-size:13px;color:var(--muted)}.hidden{display:none!important}.bigvalue{font-size:22px;font-weight:900;padding:12px 0;border-bottom:1px solid var(--line)}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:35px}
+@media(max-width:430px){h1{font-size:28px}.cards{grid-template-columns:1fr 1fr}.wrap{padding-left:13px;padding-right:13px}.card{font-size:15px;padding:10px}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="brand">FULL BUCKET</div><div class="tag">Discover what matters. Make room for it.</div>
+<div class="progress"><div id="bar"></div></div>
+
+<section id="welcome" class="screen active">
+<div class="eyebrow">Private test • V3.1</div><h1>What matters most to you?</h1>
+<p class="lead">You spend a lot of your life taking care of what matters. Full Bucket helps you discover what matters to you, identify what actually puts something back in your bucket, and see whether you're making room for it in the life you're actually living.</p>
+<div class="tip"><strong>Your answers are yours.</strong> This private test stores your working information on this device. It does not need an account or send your answers to a Full Bucket database.</div>
+<button class="btn" onclick="startFresh()">LET'S GET STARTED</button>
+<button class="btn secondary" onclick="show('about')">WHAT'S THIS ABOUT?</button>
+<button id="resumeBtn" class="btn ghost hidden" onclick="resume()">RESUME MY TEST</button>
+</section>
+
+<section id="about" class="screen"><div class="eyebrow">Why Full Bucket</div><h1>I knew why I was doing all of this.</h1>
+<p>For most of my life, responsibility made sense to me: family, work, people depending on me, things that needed to get done. The question I was much slower to ask was: <strong>What about me?</strong></p>
+<p>During an intensive behavioral-health program, one of the useful exercises I encountered was values clarification. I narrowed a large stack of values down to the few that mattered most to me. But identifying the words wasn't the hardest part.</p>
+<p>The harder questions came afterward: What actually supports those values in my life? What puts something back in my bucket? And in a day that's already full, am I making room for any of it?</p>
+<p>Full Bucket doesn't tell you how to live. It helps you connect those dots. <strong>Full Bucket can connect the dots. You make the choice.</strong></p>
+<button class="btn" onclick="showRound('all')">LET'S GET STARTED</button><button class="btn secondary" onclick="show('welcome')">BACK</button></section>
+
+<section id="values" class="screen">
+<div class="eyebrow" id="roundEyebrow">Discover</div><h1 id="roundTitle">Start with what matters.</h1><p id="roundText"></p>
+<div class="count" id="roundCount"></div><div id="valueCards" class="cards"></div>
+<button id="roundContinue" class="btn" onclick="advanceRound()">CONTINUE</button>
+</section>
+
+<section id="custom" class="screen"><div class="eyebrow">Your words belong here too</div><h1>Anything missing?</h1>
+<p>The list is only a starting point. Add any value or phrase that matters to you. Add as many as you need.</p>
+<div id="customList"></div><label class="label">Add your own value</label><input id="customInput" placeholder="Example: Pleasing God"><button class="btn ghost" onclick="addCustom()">ADD IT</button>
+<button class="btn" onclick="beginNarrowing()">CONTINUE</button></section>
+
+<section id="finalValues" class="screen"><div class="eyebrow">Your core values — right now</div><h1>These rose to the top.</h1>
+<div class="kenny">Okay. You've got your core values. Don't get hung up on whether you picked the perfect ones. These are the things that matter most to you <strong>right now</strong>. Three months from now, six months from now, or after something significant changes, you may answer differently. That's okay. Full Bucket was never meant to be one-and-done.</div>
+<div id="finalList"></div><p><strong>Do these feel equally important right now?</strong> If not, use the arrows to put them in an order that feels useful. You can also leave them exactly as they are.</p>
+<div id="rankList"></div>
+<button class="btn" onclick="show('define');renderDefinitions()">CONTINUE</button>
+<button class="btn secondary" onclick="showRound('final')">SOMETHING DOESN'T FIT</button></section>
+
+<section id="define" class="screen"><div class="eyebrow">Make them yours</div><h1>What do these mean to you?</h1>
+<p>There is no correct definition. A word on a card only becomes useful when you know what it means in your own life.</p><div id="definitionBox"></div>
+<button class="btn" onclick="saveDefinitions()">CONTINUE TO WHAT FILLS MY BUCKET</button></section>
+
+<section id="activities" class="screen"><div class="eyebrow">What puts something back?</div><h1>What actually supports these values?</h1>
+<p>A value doesn't fill your bucket by itself. Think about the people, places, activities and experiences that actually support it.</p>
+<div id="activityValues"></div><button class="btn" onclick="show('scheduleIntro')">NEXT: MY REAL LIFE</button></section>
+
+<section id="scheduleIntro" class="screen"><div class="eyebrow">A quick note from Kenny</div><h1>This part shouldn't feel like homework.</h1>
+<div class="kenny">Look, guys, give me a blank weekly schedule and tell me to fill it out and there's a pretty good chance I'm closing the app. So I'll ask a few simple questions and build the shape of your life from your answers. You don't have to account for every minute. We just need enough of the picture to be useful.<br><br><strong>And guys like me, we aren't afraid to lug that bucket around even when it's empty.</strong> We're simply looking to see where something that puts a little back might realistically fit.</div>
+<button class="btn" onclick="show('workGate')">WALK ME THROUGH IT</button><button class="btn secondary" onclick="manualStart()">I'LL BUILD IT MYSELF</button></section>
+
+<section id="workGate" class="screen"><div class="eyebrow">Your normal life pattern</div><h1>Do you currently work?</h1>
+<button class="btn" onclick="workYes()">YES</button><button class="btn secondary" onclick="noWork()">NO</button></section>
+
+<section id="workType" class="screen"><div class="eyebrow">Work</div><h1>What does your work pattern look like?</h1>
+<div class="choice" onclick="pickWork('regular')"><strong>Pretty regular</strong><br><span class="small">Mostly the same days and hours</span></div>
+<div class="choice" onclick="pickWork('rotation')"><strong>I work in stretches or rotations</strong><br><span class="small">14 on / 7 off, 20 on / 5 off, hitch or travel work</span></div>
+<div class="choice" onclick="pickWork('variable')"><strong>It changes a lot</strong><br><span class="small">Different jobs, sites, shifts or hours</span></div>
+<div class="choice" onclick="pickWork('home')"><strong>I work from home</strong></div></section>
+
+<section id="workDetails" class="screen"><div class="eyebrow">Your workday</div><h1>About what does a normal workday look like?</h1>
+<div id="rotationFields" class="hidden"><div class="row"><div><label class="label">Days working</label><input id="onDays" type="number" value="14" min="1"></div><div><label class="label">Days home/off</label><input id="offDays" type="number" value="7" min="1"></div></div></div>
+<label class="label">Usually up</label><input id="wake" type="time" value="06:00">
+<div class="row"><div><label class="label">Work starts</label><input id="workStart" type="time" value="08:00"></div><div><label class="label">Work ends</label><input id="workEnd" type="time" value="17:00"></div></div>
+<div id="commuteFields"><label class="label">Total commute/travel around work</label><select id="commute"><option value="0">None / very little</option><option value="30">About 30 minutes</option><option value="60">About 1 hour</option><option value="90">About 1½ hours</option><option value="120">About 2 hours</option><option value="180">About 3 hours</option></select></div>
+<label class="label">Do you usually get a real lunch break?</label><select id="lunch"><option>Yes</option><option>Sometimes</option><option>Rarely</option></select>
+<label class="label">Usually asleep by</label><input id="sleep" type="time" value="22:30">
+<button class="btn" onclick="saveWork()">CONTINUE</button></section>
+
+<section id="lifeGates" class="screen"><div class="eyebrow">What else owns part of your time?</div><h1>Only choose what applies.</h1>
+<p>We're not trying to get all up in your life. We just need the larger recurring pieces.</p><div id="gates"></div><button class="btn" onclick="gateDetails()">CONTINUE</button></section>
+
+<section id="gateDetails" class="screen"><div class="eyebrow">Regular commitments</div><h1>Give me the rough shape.</h1><div id="gateForm"></div><button class="btn" onclick="buildMap()">BUILD MY LIFE MAP</button></section>
+
+<section id="manual" class="screen"><div class="eyebrow">Build it yourself</div><h1>Add the big predictable blocks.</h1>
+<p>This isn't a timesheet. Add enough to make the picture reasonably accurate.</p><div id="manualList"></div>
+<label class="label">What is it?</label><input id="mLabel" placeholder="Work, caregiving, church...">
+<div class="row"><div><label class="label">Starts</label><input id="mStart" type="time" value="08:00"></div><div><label class="label">Ends</label><input id="mEnd" type="time" value="17:00"></div></div>
+<label class="label">Days</label><select id="mDays"><option value="weekdays">Monday–Friday</option><option value="weekends">Saturday–Sunday</option><option value="daily">Every day</option><option value="custom">Choose days</option></select>
+<div id="customDays" class="chips"></div><button class="btn ghost" onclick="addManual()">ADD THIS BLOCK</button><button class="btn" onclick="buildMap()">BUILD MY LIFE MAP</button></section>
+
+<section id="lifeMap" class="screen"><div class="eyebrow">Your life as you described it</div><h1>Here's the shape of it.</h1>
+<div class="kenny">Well...that explains where a big chunk of your time went. We're not here to judge your schedule. Let's just see what we're actually working with.</div>
+<div class="legend"><span><i class="dot fixed"></i>Committed</span><span><i class="dot bucket"></i>Bucket time</span><span><i class="dot open"></i>Open</span></div>
+<div id="mapBox"></div><button class="btn" onclick="renderPossibilities()">SHOW ME REALISTIC POSSIBILITIES</button><button class="btn secondary" onclick="show('scheduleIntro')">CHANGE MY SCHEDULE</button></section>
+
+<section id="possibilities" class="screen"><div class="eyebrow">Connect the dots</div><h1>You don't have to rearrange your whole life.</h1>
+<p>These possibilities come from the things <strong>you</strong> said fill your bucket and the time you described. Full Bucket can connect the dots. You make the choice.</p><div id="possibilityBox"></div>
+<button class="btn secondary" onclick="show('explore')">EXPLORE OTHER POSSIBILITIES</button><button class="btn" onclick="show('reflectionsIntro')">CONTINUE</button></section>
+
+<section id="explore" class="screen"><div class="eyebrow">Optional</div><h1>Want a search phrase?</h1>
+<p>Nothing is searched or shared. Full Bucket only creates a phrase you can copy into the search engine you prefer.</p><label class="label">City or ZIP — optional</label><input id="place" placeholder="Example: Lakehills, TX 78063"><button class="btn" onclick="makeSearches()">CREATE SEARCH IDEAS</button><div id="searchBox"></div><button class="btn secondary" onclick="show('reflectionsIntro')">CONTINUE</button></section>
+
+<section id="reflectionsIntro" class="screen"><div class="eyebrow">My Reflections</div><h1>You don't have to be a journal person.</h1>
+<div class="kenny">When journaling came up in my own program, there was one problem: I'm not much of a journal guy. Hand me a blank notebook and there's a pretty good chance it's staying blank. But I will talk.<br><br>You can type something here, or use the microphone on your phone's keyboard and talk it out. It doesn't have to be profound. Nobody's grading it.</div>
+<button class="btn" onclick="show('reflection');setTimeout(()=>document.getElementById('reflectionText').focus(),50)">TALK IT OUT / TYPE SOMETHING</button><button class="btn secondary" onclick="show('checkFreq');renderFreq()">NOT RIGHT NOW</button></section>
+
+<section id="reflection" class="screen"><div class="eyebrow">Private note to yourself</div><h1>What's on your mind?</h1>
+<textarea id="reflectionText" placeholder="Tap your keyboard microphone to speak, or type here."></textarea><button class="btn" onclick="saveReflection()">SAVE MY REFLECTION</button><button class="btn secondary" onclick="show('checkFreq');renderFreq()">SKIP</button></section>
+
+<section id="checkFreq" class="screen"><div class="eyebrow">Your preference</div><h1>Would a simple check-in be useful?</h1>
+<p>You choose the frequency. No streaks. No score. No guilt.</p><div id="freqChoices"></div><button id="freqNext" class="btn" disabled onclick="finish()">SAVE MY CHOICE</button></section>
+
+<section id="done" class="screen"><div class="eyebrow">Your Full Bucket</div><h1>You've built your first map.</h1><div id="doneBox"></div>
+<div class="tip"><strong>Observe, don't judge. Record, don't grade. Reflect, don't prescribe.</strong></div>
+<button class="btn" onclick="show('dashboard');renderDashboard()">OPEN MY FULL BUCKET</button></section>
+
+<section id="dashboard" class="screen"><div class="eyebrow">My Full Bucket</div><h1>Your map belongs to you.</h1><div id="dashBox"></div>
+<button class="btn" onclick="show('reflection')">ADD A REFLECTION</button><button class="btn secondary" onclick="downloadBackup()">SAVE MY FULL BUCKET BACKUP</button>
+<label class="btn secondary" style="text-align:center">RESTORE MY FULL BUCKET<input type="file" accept=".json" onchange="restoreBackup(this)" style="display:none"></label>
+<button class="btn ghost" onclick="checkAgain()">CHECK MY BUCKET AGAIN</button></section>
+
+<footer>Full Bucket • Private Test V3.1 • A practical values-to-action and life-planning tool. Not therapy, diagnosis, or medical care.</footer>
+</div>
+<script>
+const VALUES=["Acceptance","Achievement","Adventure","Authenticity","Balance","Beauty","Belonging","Calm","Challenge","Community","Compassion","Connection","Contentment","Contribution","Courage","Creativity","Curiosity","Dependability","Discipline","Discovery","Education","Efficiency","Equality","Excellence","Family","Faith","Financial Security","Freedom","Friendship","Fun","Generosity","Growth","Health","Honesty","Hope","Humility","Independence","Inner Peace","Integrity","Joy","Justice","Kindness","Knowledge","Leadership","Learning","Legacy","Loyalty","Love","Meaning","Music","Nature","Open-mindedness","Order","Patience","Peace","Personal Growth","Play","Pleasing God","Pleasure","Privacy","Purpose","Reliability","Respect","Responsibility","Safety","Self-Discipline","Self-Expression","Self-Respect","Service","Simplicity","Spirituality","Stability","Stillness","Strength","Success","Support","Teaching","Tradition","Trust","Truth","Understanding","Variety","Vitality","Wisdom","Wonder","Work"];
+const GATES=["Kids / school / sports","Homeschooling","Caring for someone","Church / faith commitments","Second job / business","Regular appointments","Household / property responsibilities","Other recurring commitment"];
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], KEY="full_bucket_v31_test";
+let state=load(), currentRound="all";
+function fresh(){return{screen:"welcome",rounds:{all:[],r40:[],r20:[],r10:[],final:[]},custom:[],core:[],defs:{},activities:[],work:null,gates:[],gateData:{},manual:[],placed:[],reflections:[],freq:""}}
+function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return fresh()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));document.getElementById("resumeBtn").classList.toggle("hidden",!state.screen||state.screen==="welcome")}
+const P={welcome:0,about:2,values:12,custom:20,finalValues:42,define:50,activities:60,scheduleIntro:68,workGate:70,workType:72,workDetails:75,lifeGates:78,gateDetails:81,manual:75,lifeMap:86,possibilities:90,explore:92,reflectionsIntro:94,reflection:95,checkFreq:97,done:100,dashboard:100};
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.getElementById("bar").style.width=(P[id]||0)+"%";state.screen=id;save();window.scrollTo(0,0)}
+function resume(){let id=state.screen||"welcome"; if(id==="values")showRound(state.currentRound||"all"); else if(id==="activities"){renderActivities();show(id)} else if(id==="define"){renderDefinitions();show(id)} else if(id==="lifeGates"){renderGates();show(id)} else if(id==="lifeMap")buildMap(); else if(id==="dashboard"){renderDashboard();show(id)} else {show(id)}}
+function startFresh(){state=fresh();save();showRound("all")}
+function sourceFor(r){if(r==="all")return [...VALUES,...state.custom];if(r==="r40")return state.rounds.all;if(r==="r20")return state.rounds.r40;if(r==="r10")return state.rounds.r20;if(r==="final")return state.rounds.r10;return VALUES}
+function targetFor(r){return {all:40,r40:20,r20:10,r10:3,final:3}[r]}
+function showRound(r){currentRound=r;state.currentRound=r;let src=sourceFor(r), chosen=state.rounds[r]||[];if(r==="all"&&chosen.length===0&&state.rounds.all.length===0) chosen=[];
+ const labels={all:["Start broad.","Tap everything that feels important. Don't overthink it. Your first job is to get the list down to about 40.","Choose up to 40"],r40:["Now narrow it.","Whew. That one is a little tougher. A lot of things matter. We're trying to discover which ones matter most to you right now.","Choose 20"],r20:["A little more ruthless.","You're not saying the others don't matter. You're making room for the ones that matter most right now.","Choose 10"],r10:["Your core values.","This is where I got stuck too. Don't worry about picking the “right” ones. Nobody's grading this thing. Three is a useful target; if you truly need another, you can keep it.","Choose 3 — or a few more"],final:["Take another look.","Change anything that doesn't fit before you move on.","Choose your core values"]}[r];
+ document.getElementById("roundEyebrow").textContent=labels[0];document.getElementById("roundTitle").textContent=r==="all"?"What matters to you?":"Keep what matters most.";document.getElementById("roundText").textContent=labels[1];
+ document.getElementById("valueCards").innerHTML=src.map(v=>`<button class="card ${chosen.includes(v)?"on":""}" onclick='toggleValue(${JSON.stringify(v)})'>${esc(v)}</button>`).join("");
+ updateRoundCount();show("values")
+}
+function toggleValue(v){let a=state.rounds[currentRound]||[], max=targetFor(currentRound);if(a.includes(v))a=a.filter(x=>x!==v);else{if(currentRound!=="r10"&&currentRound!=="final"&&a.length>=max){alert("You've reached this round's target. Tap one to remove it before adding another.");return}a.push(v)}state.rounds[currentRound]=a;save();document.querySelectorAll("#valueCards .card").forEach(b=>b.classList.toggle("on",a.includes(b.textContent)));updateRoundCount()}
+function updateRoundCount(){let n=(state.rounds[currentRound]||[]).length,t=targetFor(currentRound), el=document.getElementById("roundCount");el.textContent=`Selected: ${n} • ${currentRound==="r10"||currentRound==="final"?"Aim for at least 3":`Target: ${t}`}`;document.getElementById("roundContinue").disabled=currentRound==="all"?n<3:(currentRound==="r40"?n!==20:(currentRound==="r20"?n!==10:n<3))}
+function advanceRound(){let n=state.rounds[currentRound].length;if(currentRound==="all"){show("custom");renderCustom()}else if(currentRound==="r40")showRound("r20");else if(currentRound==="r20")showRound("r10");else if(currentRound==="r10"||currentRound==="final"){state.core=[...state.rounds[currentRound]];renderFinal();show("finalValues")}}
+function renderCustom(){document.getElementById("customList").innerHTML=state.custom.map(x=>`<div class="panel">${esc(x)}</div>`).join("")}
+function addCustom(){let x=document.getElementById("customInput").value.trim();if(!x)return;if(!state.custom.includes(x)){state.custom.push(x);state.rounds.all.push(x)}document.getElementById("customInput").value="";save();renderCustom()}
+function beginNarrowing(){if(state.rounds.all.length>40){showRound("r40")}else{state.rounds.r40=[...state.rounds.all];if(state.rounds.r40.length>20)showRound("r40");else{state.rounds.r20=[...state.rounds.r40];showRound("r20")}}}
+function renderFinal(){document.getElementById("finalList").innerHTML=state.core.map(v=>`<div class="bigvalue">${esc(v)}</div>`).join("");renderRank()}
+function renderRank(){document.getElementById("rankList").innerHTML=state.core.map((v,i)=>`<div class="panel"><strong>${i+1}. ${esc(v)}</strong><div class="row"><button class="btn secondary small" onclick="moveCore(${i},-1)">↑ MOVE UP</button><button class="btn secondary small" onclick="moveCore(${i},1)">↓ MOVE DOWN</button></div></div>`).join("")}
+function moveCore(i,d){let j=i+d;if(j<0||j>=state.core.length)return;[state.core[i],state.core[j]]=[state.core[j],state.core[i]];state.rounds.r10=[...state.core];save();renderFinal()}
+function renderDefinitions(){document.getElementById("definitionBox").innerHTML=state.core.map(v=>`<div class="panel"><h2>${esc(v)}</h2><label class="label">What does ${esc(v)} mean in your life?</label><textarea data-def="${escAttr(v)}" placeholder="In my life, this means...">${esc(state.defs[v]||"")}</textarea></div>`).join("")}
+function saveDefinitions(){document.querySelectorAll("[data-def]").forEach(x=>state.defs[x.dataset.def]=x.value.trim());save();renderActivities();show("activities")}
+function renderActivities(){document.getElementById("activityValues").innerHTML=state.core.map(v=>{let list=state.activities.filter(a=>a.values.includes(v));return `<div class="panel"><h2>${esc(v)}</h2><div class="small">${esc(state.defs[v]||"")}</div>${list.map(a=>activityHTML(a)).join("")}<button class="btn ghost small" onclick='activityForm(${JSON.stringify(v)})'>+ ADD SOMETHING THAT SUPPORTS THIS</button><div id="form-${safe(v)}"></div></div>`}).join("")}
+function activityHTML(a){return `<div class="activity"><button class="x" onclick="removeActivity(${a.id})">×</button><strong>${esc(a.name)}</strong><div class="small">${a.minutes} min total • ${esc(a.frequency)}${a.values.length>1?" • supports "+a.values.map(esc).join(", "):""}</div>${a.note?`<div>${esc(a.note)}</div>`:""}</div>`}
+function activityForm(v){let el=document.getElementById("form-"+safe(v));el.innerHTML=`<label class="label">What puts something back in your bucket?</label><input id="an-${safe(v)}" placeholder="Lake, music, prayer, call my daughter..."><label class="label">Total realistic time — including travel/setup if needed</label><input id="am-${safe(v)}" type="number" min="5" value="30"><label class="label">How often would you like room for it?</label><select id="af-${safe(v)}"><option>A few times a week</option><option>Weekly</option><option>Most days</option><option>Every two weeks</option><option>Monthly</option><option>Whenever it fits</option></select><label class="label">Anything useful to remember?</label><input id="ao-${safe(v)}" placeholder="Optional"><label class="label">Does it support another core value too?</label><div class="chips">${state.core.filter(x=>x!==v).map(x=>`<label class="chip"><input style="width:auto;margin:0 4px 0 0" type="checkbox" class="cross-${safe(v)}" value="${escAttr(x)}">${esc(x)}</label>`).join("")}</div><button class="btn small" onclick='saveActivity(${JSON.stringify(v)})'>SAVE THIS</button>`}
+function saveActivity(v){let name=document.getElementById("an-"+safe(v)).value.trim();if(!name)return alert("Give this activity a name first.");let vals=[v,...[...document.querySelectorAll(".cross-"+safe(v)+":checked")].map(x=>x.value)];state.activities.push({id:Date.now(),name,minutes:+document.getElementById("am-"+safe(v)).value||30,frequency:document.getElementById("af-"+safe(v)).value,note:document.getElementById("ao-"+safe(v)).value.trim(),values:vals});save();renderActivities()}
+function removeActivity(id){state.activities=state.activities.filter(a=>a.id!==id);save();renderActivities()}
+function workYes(){show("workType")}function noWork(){state.work={type:"none",wake:"07:00",sleep:"22:30"};save();renderGates();show("lifeGates")}
+function pickWork(t){state.work={type:t};show("workDetails");document.getElementById("rotationFields").classList.toggle("hidden",t!=="rotation");document.getElementById("commuteFields").classList.toggle("hidden",t==="home")}
+function saveWork(){Object.assign(state.work,{wake:wake.value,start:workStart.value,end:workEnd.value,commute:state.work.type==="home"?0:+commute.value,lunch:lunch.value,on:state.work.type==="rotation"?+onDays.value:null,off:state.work.type==="rotation"?+offDays.value:null,sleep:sleep.value});save();renderGates();show("lifeGates")}
+function renderGates(){document.getElementById("gates").innerHTML=GATES.map(g=>`<div class="choice ${state.gates.includes(g)?"on":""}" onclick='toggleGate(${JSON.stringify(g)},this)'>${esc(g)}</div>`).join("")}
+function toggleGate(g,el){state.gates.includes(g)?state.gates=state.gates.filter(x=>x!==g):state.gates.push(g);el.classList.toggle("on");save()}
+function gateDetails(){if(!state.gates.length)return buildMap();document.getElementById("gateForm").innerHTML=state.gates.map((g,i)=>`<div class="panel"><strong>${esc(g)}</strong><label class="label">Roughly how much time?</label><select id="gd${i}"><option value="30">30 minutes</option><option value="60">1 hour</option><option value="120">2 hours</option><option value="180">3 hours</option><option value="240">4 hours</option><option value="480">8 hours</option></select><label class="label">How often?</label><select id="gf${i}"><option value="daily">Most days</option><option value="weekdays">Weekdays</option><option value="weekly">About once a week</option><option value="weekends">Weekends</option></select></div>`).join("");show("gateDetails")}
+function captureGates(){state.gates.forEach((g,i)=>state.gateData[g]={minutes:+document.getElementById("gd"+i)?.value||60,frequency:document.getElementById("gf"+i)?.value||"weekly"});save()}
+function manualStart(){state.manual=state.manual||[];document.getElementById("customDays").innerHTML=DAYS.map(d=>`<label class="chip"><input type="checkbox" class="md" value="${d}" style="width:auto;margin:0 4px 0 0">${d}</label>`).join("");renderManual();show("manual")}
+function addManual(){let label=mLabel.value.trim();if(!label)return alert("Name the block first.");let mode=mDays.value,days=mode==="weekdays"?DAYS.slice(0,5):mode==="weekends"?DAYS.slice(5):mode==="daily"?DAYS:[...document.querySelectorAll(".md:checked")].map(x=>x.value);state.manual.push({id:Date.now(),label,start:mStart.value,end:mEnd.value,days});save();mLabel.value="";renderManual()}
+function renderManual(){document.getElementById("manualList").innerHTML=(state.manual||[]).map(x=>`<div class="activity"><button class="x" onclick="state.manual=state.manual.filter(y=>y.id!==${x.id});save();renderManual()">×</button><strong>${esc(x.label)}</strong><div class="small">${fmt(x.start)}–${fmt(x.end)} • ${x.days.join(", ")}</div></div>`).join("")}
+function buildMap(){if(state.screen==="gateDetails")captureGates();let summary="";if(state.work?.type==="rotation")summary=`<div class="tip"><strong>${state.work.on} days working / ${state.work.off} days home.</strong> Your work stretch and home stretch are different life patterns. The week below is a simple work-stretch view; Full Bucket will also consider your home days when suggesting possibilities.</div>`;else if(state.work?.type==="variable")summary=`<div class="tip">You told us your work changes a lot. This map is a rough picture, not a promise that every week looks the same.</div>`;
+document.getElementById("mapBox").innerHTML=summary+weekTable();show("lifeMap")}
+function weekTable(){let rows=[];for(let h=6;h<=22;h++){let cells=DAYS.map((d,di)=>{let cls="open",txt="";if(isCommitted(di,h)){cls="fixed";txt=commitLabel(di,h)}let p=state.placed.find(x=>x.day===di&&x.hour===h);if(p){cls="bucket";txt=p.name}return `<td class="${cls}">${txt}</td>`}).join("");rows.push(`<tr><th>${fmtHour(h)}</th>${cells}</tr>`)}return `<div class="week"><table><thead><tr><th>Time</th>${DAYS.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`}
+function isCommitted(di,h){if(state.manual?.some(x=>x.days.includes(DAYS[di])&&h>=hour(x.start)&&h<hour(x.end)))return true;if(state.work&&state.work.type!=="none"&&state.work.type!=="variable"){if(di<5&&h>=hour(state.work.start)&&h<hour(state.work.end))return true}return false}
+function commitLabel(di,h){let m=state.manual?.find(x=>x.days.includes(DAYS[di])&&h>=hour(x.start)&&h<hour(x.end));if(m)return esc(m.label);if(state.work&&di<5&&h>=hour(state.work.start)&&h<hour(state.work.end))return "Work";return ""}
+function renderPossibilities(){let opens=[];for(let d=0;d<7;d++)for(let h=7;h<=21;h++)if(!isCommitted(d,h))opens.push({d,h});let html="";
+if(!state.activities.length)html=`<div class="tip">You haven't added any bucket-filling activities yet. Go back and add at least one so Full Bucket has something of yours to work with.</div>`;
+else state.activities.forEach(a=>{let slot=opens.find(o=>a.minutes<=60&&!state.placed.some(p=>p.day===o.d&&p.hour===o.h))||opens[0];html+=`<div class="panel"><strong>${esc(a.name)}</strong><div class="small">${a.minutes} minutes • supports ${a.values.map(esc).join(", ")}</div>${slot?`<p>One possible opening: <strong>${DAYS[slot.d]} around ${fmtHour(slot.h)}</strong>.</p><button class="btn small" onclick="placeActivity(${a.id},${slot.d},${slot.h})">ADD TO THIS TIME</button>`:`<p>Your schedule doesn't show an obvious opening for this right now. Leaving it unplaced is completely okay.</p>`}<button class="btn secondary small" onclick="void(0)">LEAVE IT OPEN</button></div>`});document.getElementById("possibilityBox").innerHTML=html;show("possibilities")}
+function placeActivity(id,d,h){let a=state.activities.find(x=>x.id===id);if(!a)return;state.placed=state.placed.filter(x=>!(x.day===d&&x.hour===h));state.placed.push({activityId:id,name:a.name,day:d,hour:h});save();renderPossibilities()}
+function makeSearches(){let p=place.value.trim()||"[my area]",qs=state.activities.slice(0,5).map(a=>`${a.name} opportunities or places near ${p}`);if(!qs.length)qs=state.core.slice(0,5).map(v=>`${v} activities or groups near ${p}`);document.getElementById("searchBox").innerHTML=qs.map(q=>`<div class="panel">${esc(q)}<button class="btn ghost small" onclick='copyText(${JSON.stringify(q)})'>COPY SEARCH</button></div>`).join("")}
+function copyText(t){navigator.clipboard?.writeText(t);alert("Copied. Paste it into the search engine you prefer.")}
+function saveReflection(){let t=reflectionText.value.trim();if(t)state.reflections.push({date:new Date().toISOString(),text:t});reflectionText.value="";save();renderFreq();show("checkFreq")}
+function renderFreq(){let opts=["Daily","A few times a week","Weekly","Every two weeks","Not right now"];document.getElementById("freqChoices").innerHTML=opts.map(x=>`<div class="choice ${state.freq===x?"on":""}" onclick='pickFreq(${JSON.stringify(x)},this)'>${x}</div>`).join("");document.getElementById("freqNext").disabled=!state.freq}
+function pickFreq(x,el){state.freq=x;document.querySelectorAll("#freqChoices .choice").forEach(e=>e.classList.remove("on"));el.classList.add("on");document.getElementById("freqNext").disabled=false;save()}
+function finish(){document.getElementById("doneBox").innerHTML=`<div class="panel"><strong>What matters right now</strong><div class="chips">${state.core.map(v=>`<span class="chip on">${esc(v)}</span>`).join("")}</div></div><div class="panel"><strong>Things you said fill your bucket</strong><p>${state.activities.length?state.activities.map(a=>esc(a.name)).join(" • "):"None added yet"}</p></div><div class="panel"><strong>Check-in preference</strong><p>${esc(state.freq||"Not right now")}</p></div>`;show("done")}
+function renderDashboard(){document.getElementById("dashBox").innerHTML=`<div class="panel"><h2>What matters right now</h2>${state.core.map(v=>`<div class="bigvalue">${esc(v)}</div>`).join("")}</div><div class="panel"><h2>My bucket-filling menu</h2>${state.activities.map(activityHTML).join("")||"<p>Nothing added yet.</p>"}</div><div class="panel"><h2>My reflections</h2>${state.reflections.slice().reverse().map(r=>`<p><span class="small">${new Date(r.date).toLocaleDateString()}</span><br>${esc(r.text)}</p>`).join("")||"<p>No reflections saved yet.</p>"}</div>`}
+function checkAgain(){if(confirm("Start a fresh look at your values? Your existing activities and reflections will stay saved, but your value selections will be cleared for reassessment.")){state.rounds={all:[],r40:[],r20:[],r10:[],final:[]};state.core=[];save();showRound("all")}}
+function downloadBackup(){let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="My-Full-Bucket-Backup.json";a.click();URL.revokeObjectURL(a.href)}
+function restoreBackup(inp){let f=inp.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{state=Object.assign(fresh(),JSON.parse(r.result));save();renderDashboard();show("dashboard");alert("Your Full Bucket backup has been restored.")}catch(e){alert("That file doesn't appear to be a Full Bucket backup.")}};r.readAsText(f)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function escAttr(s){return esc(s)}function safe(s){return String(s).replace(/[^a-z0-9]/gi,"_")}function hour(t){return +(t||"0:0").split(":")[0]}
+function fmt(t){let [h,m]=t.split(":").map(Number),a=h>=12?"PM":"AM";return `${h%12||12}:${String(m).padStart(2,"0")} ${a}`}function fmtHour(h){return `${h%12||12} ${h>=12?"PM":"AM"}`}
+save();
+</script></body></html>
