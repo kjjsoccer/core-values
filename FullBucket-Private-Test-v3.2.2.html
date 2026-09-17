@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Full Bucket — Private Test V3.2</title>
+<style>
+:root{
+ --ink:#17221c;--muted:#667168;--paper:#f5f2ea;--card:#fff;--line:#d6dcd7;
+ --green:#245a45;--green2:#3d8064;--greenSoft:#e3f0e8;
+ --blue:#dceaf7;--blueInk:#204d73;--purple:#e9e0f4;--purpleInk:#62427d;
+ --orange:#f8e5cc;--orangeInk:#86551c;--yellow:#fff1b8;--yellowInk:#745d00;
+ --rose:#f5dddd;--roseInk:#7b3e43;--gray:#e4e7e8;--grayInk:#485156;
+ --open:#eef8f1;--openInk:#2e6747;--bucket:#cfead8;--bucketInk:#174c31;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:820px;margin:auto;padding:16px 14px 92px}
+.brand{font-weight:950;letter-spacing:.09em;font-size:20px}.tag{font-size:13px;color:var(--muted)}
+.top{position:sticky;top:0;z-index:20;background:rgba(245,242,234,.96);padding:8px 0 7px;backdrop-filter:blur(8px)}
+.progress{height:5px;background:#deddd7;border-radius:8px;overflow:hidden;margin-top:9px}.progress div{height:100%;background:linear-gradient(90deg,var(--green),var(--green2));width:0}
+.screen{display:none}.screen.active{display:block}
+h1{font-size:31px;line-height:1.08;margin:13px 0 10px}h2{font-size:22px;margin:18px 0 8px}h3{margin:10px 0 6px}
+p{margin:7px 0 14px}.lead{font-size:19px}.small{font-size:13px;color:var(--muted)}
+.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:12px;font-weight:850;color:var(--green)}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:15px 14px;margin:10px 0;background:var(--green);color:#fff;font-weight:850;font-size:15px}
+.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.ghost{background:transparent;color:var(--green);border:1px solid var(--green)}
+.btn.small{padding:10px 11px;margin:6px 0}.btn.inline{display:inline-block;width:auto;margin:4px}
+.navrow{display:grid;grid-template-columns:1fr 2fr;gap:9px;margin-top:16px}
+.panel,.tip{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;margin:13px 0}
+.tip{background:var(--greenSoft)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.card{min-height:58px;text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:11px;font-weight:750;font-size:16px;color:var(--ink)}
+.card.on{background:var(--green);border-color:var(--green);color:#fff}.card.off{background:#fff}
+.count{position:sticky;top:69px;z-index:8;background:rgba(245,242,234,.97);padding:9px 0;font-weight:850}
+input,select,textarea{width:100%;font:inherit;border:1px solid #cbd2cc;border-radius:10px;padding:12px;background:#fff;color:var(--ink);margin:5px 0 12px}
+textarea{min-height:100px}.label{font-weight:800}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{background:#fff;border:2px solid var(--line);border-radius:12px;padding:13px;margin:8px 0;cursor:pointer}.choice.on{border-color:var(--green);background:var(--greenSoft)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:#fff;font-size:13px}.chip.on{background:var(--green);color:#fff}
+.activity{border-left:5px solid var(--green2);background:#f7fbf8;border-radius:10px;padding:10px 12px;margin:8px 0}
+.libraryGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.suggestion{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;min-height:70px}
+.modal{display:none;position:fixed;inset:0;background:rgba(12,24,18,.55);z-index:100;padding:18px;align-items:center;justify-content:center}.modal.show{display:flex}
+.modalbox{max-width:520px;width:100%;background:#fff;border-radius:20px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.modalbox h2{margin-top:0}
+.legend{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.legend span{padding:6px 9px;border-radius:999px;font-size:12px;font-weight:800}
+.sleep{background:var(--purple);color:var(--purpleInk)}.work{background:var(--blue);color:var(--blueInk)}.commute{background:var(--gray);color:var(--grayInk)}
+.routine{background:var(--orange);color:var(--orangeInk)}.fixed{background:var(--rose);color:var(--roseInk)}.flexible{background:var(--yellow);color:var(--yellowInk)}
+.open{background:var(--open);color:var(--openInk)}.bucket{background:var(--bucket);color:var(--bucketInk)}
+.daytabs{display:flex;gap:6px;overflow:auto;padding:3px 0 9px}.daytab{min-width:54px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 7px;font-weight:800}.daytab.on{background:var(--green);color:#fff}
+.timeline{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}.slot{display:grid;grid-template-columns:84px 1fr;min-height:48px;border-bottom:1px solid #e7e9e7}.slot:last-child{border-bottom:0}
+.time{padding:9px;font-size:12px;color:var(--muted);background:#fafafa}.block{padding:8px 10px;font-size:14px;cursor:pointer}.block strong{display:block}
+.tray{position:sticky;bottom:8px;z-index:15;background:#fff;border:2px solid var(--green);border-radius:15px;padding:10px;box-shadow:0 5px 25px rgba(0,0,0,.12)}
+.dragcard{display:inline-block;background:var(--bucket);border:1px solid #9fc9ad;border-radius:10px;padding:9px;margin:4px;font-weight:800;touch-action:none}
+.dropHint{outline:3px dashed var(--green2);outline-offset:-4px}
+.homegrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.homebtn{border:1px solid var(--line);background:#fff;border-radius:15px;padding:16px;text-align:left;min-height:110px}.homebtn strong{display:block;font-size:18px;margin-bottom:5px}
+.reflection{border-bottom:1px solid var(--line);padding:10px 0}.hidden{display:none!important}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:30px}
+@media(max-width:520px){h1{font-size:28px}.cards,.libraryGrid,.homegrid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}.slot{grid-template-columns:72px 1fr}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="top"><div class="brand">FULL BUCKET</div><div class="tag">Discover what matters. Make room for it.</div><div class="progress"><div id="bar"></div></div></div>
+
+<section id="welcome" class="screen active"><div class="eyebrow">Private test • V3.2.2</div><h1>What matters most to you?</h1>
+<p class="lead">Full Bucket helps you discover what matters to you, explore things that may support it, and make room for the things you choose in the life you're actually living.</p>
+<div class="tip"><strong>Your bucket isn't our dataset.</strong><br>This private test keeps your working answers and reflections on this device. No account is required.</div>
+<button class="btn" onclick="startFresh()">LET'S GET STARTED</button><button class="btn secondary" onclick="show('about')">WHAT'S THIS ABOUT?</button><button id="resumeBtn" class="btn ghost hidden" onclick="resume()">RESUME MY TEST</button></section>
+
+<section id="about" class="screen"><div class="eyebrow">Why Full Bucket</div><h1>I knew why I was doing all of this.</h1>
+<p>For most of my life, responsibility made sense: family, work, people depending on me, things that needed to get done. The question I was much slower to ask was: <strong>What about me?</strong></p>
+<p>During an intensive behavioral-health program, one useful exercise was values clarification. But identifying the words wasn't the hardest part. The harder questions came afterward: What actually supports those values? What puts something back in my bucket? And in a life that's already full, where does any of it fit?</p>
+<p><strong>Full Bucket can connect the dots. You make the choice.</strong></p>
+<div class="navrow"><button class="btn secondary" onclick="show('welcome')">BACK</button><button class="btn" onclick="showRound('all')">LET'S GET STARTED</button></div></section>
+
+<section id="values" class="screen"><div class="eyebrow" id="roundEye"></div><h1 id="roundTitle"></h1><p id="roundText"></p><div class="count" id="roundCount"></div><div id="valueCards" class="cards"></div><button id="roundContinue" class="btn" onclick="advanceRound()">CONTINUE</button><button class="btn secondary" onclick="backRound()">BACK</button></section>
+
+<section id="custom" class="screen"><div class="eyebrow">Your words count</div><h1>Something important missing?</h1><p>Add as many as you need. <strong>Pleasing God</strong> is already included in the list.</p>
+<input id="customInput" placeholder="Add a value in your own words"><button class="btn ghost" onclick="addCustom()">+ ADD IT</button><div id="customList"></div>
+<div class="navrow"><button class="btn secondary" onclick="showRound('all')">BACK</button><button class="btn" onclick="beginNarrowing()">START NARROWING</button></div></section>
+
+<section id="finalValues" class="screen"><div class="eyebrow">Your core values</div><h1>This is your snapshot right now.</h1><p>No ranking is required. These aren't permanent labels.</p><div id="finalList"></div>
+<div class="navrow"><button class="btn secondary" onclick="showRound('r10')">BACK</button><button class="btn" onclick="renderDefinitions();show('define')">CONTINUE</button></div></section>
+
+<section id="define" class="screen"><div class="eyebrow">Make them yours</div><h1>What do these mean in your life?</h1><p>Optional. A word can mean something different to you than it does to somebody else.</p><div id="definitionBox"></div>
+<div class="navrow"><button class="btn secondary" onclick="show('finalValues')">BACK</button><button class="btn" onclick="saveDefinitions()">EXPLORE WHAT SUPPORTS THEM</button></div></section>
+
+<section id="activities" class="screen"><div class="eyebrow">Explore</div><h1>What puts something back in your bucket?</h1>
+<p>You may already know. If not, Full Bucket can offer possibilities. They are ideas—not prescriptions.</p><div id="activityValues"></div>
+<div class="navrow"><button class="btn secondary" onclick="renderDefinitions();show('define')">BACK</button><button class="btn" onclick="show('scheduleIntro')">NEXT: MY REAL LIFE</button></div></section>
+
+<section id="scheduleIntro" class="screen"><div class="eyebrow">Make room</div><h1>Now let's build the life you actually have.</h1>
+<p>This may be the tedious part. We'll do it in layers. We're not trying to judge your schedule. We need enough of the real picture to see what time is already spoken for—and what isn't.</p>
+<div class="tip"><strong>Take your time.</strong> You can come back and change this later. Full Bucket isn't a timesheet.</div>
+<div class="navrow"><button class="btn secondary" onclick="renderActivities();show('activities')">BACK</button><button class="btn" onclick="loadBasics();show('basics')">BUILD MY BASE SCHEDULE</button></div></section>
+
+<section id="basics" class="screen"><div class="eyebrow">Layer 1 • Your day</div><h1>Start with the bookends.</h1>
+<div class="row"><div><label class="label">Typical weekday wake time</label><input id="wakeWeek" type="time" value="07:00"></div><div><label class="label">Typical weekday sleep time</label><input id="sleepWeek" type="time" value="22:00"></div></div>
+<div class="row"><div><label class="label">Typical weekend wake time</label><input id="wakeEnd" type="time" value="09:00"></div><div><label class="label">Typical weekend sleep time</label><input id="sleepEnd" type="time" value="23:00"></div></div>
+<div class="navrow"><button class="btn secondary" onclick="show('scheduleIntro')">BACK</button><button class="btn" onclick="saveBasics()">NEXT: WORK</button></div></section>
+
+<section id="work" class="screen"><div class="eyebrow">Layer 2 • Work</div><h1>What does work really take?</h1>
+<label class="label">Which pattern is closest?</label><select id="workPattern"><option value="regular">Pretty regular weekdays</option><option value="rotation">Rotation / hitch / stretches</option><option value="variable">Different jobs, sites or shifts</option><option value="home">Work from home</option><option value="none">Not currently working</option></select>
+<div class="row"><div><label class="label">Work starts</label><input id="workStart" type="time" value="09:00"></div><div><label class="label">Work ends</label><input id="workEnd" type="time" value="18:00"></div></div>
+<label class="label">One-way commute on a typical workday</label><select id="commuteMin"><option value="0">None</option><option value="15">15 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">1 hour</option><option value="90">1½ hours</option><option value="120">2 hours</option></select>
+<label class="label">Lunch / break</label><select id="lunchKind"><option value="free60">About 1 hour and genuinely mine</option><option value="free30">About 30 minutes and genuinely mine</option><option value="onsite60">About 1 hour but I need to stay available/on site</option><option value="onsite30">About 30 minutes but I need to stay available/on site</option><option value="none">No predictable break</option></select>
+<div class="navrow"><button class="btn secondary" onclick="show('basics')">BACK</button><button class="btn" onclick="saveWork()">NEXT: DAILY ROUTINES</button></div></section>
+
+<section id="routine" class="screen"><div class="eyebrow">Layer 3 • Everyday life</div><h1>What happens around work?</h1>
+<p>Add the predictable pieces: prayer/quiet time, getting ready, breakfast, dinner, chores, winding down. You can mark something <strong>Flexible</strong> if you consider that time movable.</p>
+<div id="routineList"></div><button class="btn ghost" onclick="addBlockForm('routineList','routine')">+ ADD A ROUTINE</button>
+<div class="navrow"><button class="btn secondary" onclick="show('work')">BACK</button><button class="btn" onclick="show('commitments');renderBlocks('commitList','fixed')">NEXT: COMMITMENTS</button></div></section>
+
+<section id="commitments" class="screen"><div class="eyebrow">Layer 4 • Responsibilities</div><h1>What else already owns time?</h1>
+<p>Kids' sports, church, caring for someone, appointments, property responsibilities, a second job, poker night, volleyball, regular social plans—whatever is actually part of your life.</p>
+<div id="commitList"></div><button class="btn ghost" onclick="addBlockForm('commitList','fixed')">+ ADD A COMMITMENT</button>
+<div class="navrow"><button class="btn secondary" onclick="renderBlocks('routineList','routine');show('routine')">BACK</button><button class="btn" onclick="buildSchedule()">SHOW ME MY WEEK</button></div></section>
+
+<section id="schedule" class="screen"><div class="eyebrow">Your real life</div><h1>Where does your time go?</h1>
+<div class="legend"><span class="sleep">Sleep</span><span class="work">Work</span><span class="commute">Commute</span><span class="routine">Routine</span><span class="fixed">Committed</span><span class="flexible">Flexible</span><span class="open">Open</span><span class="bucket">Bucket</span></div>
+<div id="scheduleSummary" class="tip"></div><div id="dayTabs" class="daytabs"></div><div id="timeline" class="timeline"></div>
+<div id="activityTray" class="tray"></div>
+<button class="btn" onclick="coach()">HELP ME MAKE ROOM</button>
+<div class="navrow"><button class="btn secondary" onclick="show('commitments')">EDIT MY SCHEDULE</button><button class="btn" onclick="showHome()">MY FULL BUCKET</button></div></section>
+
+<section id="home" class="screen"><div class="eyebrow">My Full Bucket</div><h1>This is yours to work with.</h1><div id="homeSummary"></div>
+<div class="homegrid">
+<button class="homebtn" onclick="showRound('final')"><strong>My Values</strong><span>See what matters right now.</span></button>
+<button class="homebtn" onclick="renderActivities();show('activities')"><strong>What Fills My Bucket</strong><span>Explore and edit possibilities.</span></button>
+<button class="homebtn" onclick="buildSchedule()"><strong>My Schedule</strong><span>See, change and make room.</span></button>
+<button class="homebtn" onclick="renderReflections();show('reflections')"><strong>My Reflections</strong><span>Private notes in your own words.</span></button>
+</div><button class="btn ghost" onclick="checkAgain()">CHECK MY BUCKET AGAIN</button><button class="btn secondary" onclick="downloadBackup()">SAVE A PRIVATE BACKUP</button></section>
+
+<section id="reflections" class="screen"><div class="eyebrow">My Reflections</div><h1>A place to remember what you're learning.</h1>
+<p>This isn't homework and Full Bucket doesn't grade or interpret it. Type—or use your device's microphone to dictate—anything you want to remember.</p>
+<textarea id="reflectionText" placeholder="What's on your mind?"></textarea><button class="btn" onclick="saveReflection()">SAVE THIS REFLECTION</button><div id="reflectionList"></div><button class="btn secondary" onclick="showHome()">BACK TO MY FULL BUCKET</button></section>
+
+<footer>Private prototype • Full Bucket V3.2.2<br>Full Bucket is a practical reflection and planning tool. It is not medical or mental-health treatment and does not diagnose or treat any condition.</footer>
+</div>
+
+<div id="kennyModal" class="modal"><div class="modalbox"><div class="eyebrow">A note from Kenny</div><h2 id="kmTitle"></h2><p id="kmText"></p><button class="btn" onclick="closeModal()">KEEP GOING</button><button class="btn secondary" onclick="suppressMoments()">DON'T SHOW THESE AGAIN</button></div></div>
+
+<script>
+const VALUES=["Acceptance", "Achievement", "Adventure", "Authenticity", "Balance", "Beauty", "Belonging", "Calm", "Challenge", "Community", "Compassion", "Connection", "Contentment", "Contribution", "Courage", "Creativity", "Curiosity", "Dependability", "Discipline", "Discovery", "Education", "Efficiency", "Equality", "Excellence", "Family", "Faith", "Financial Security", "Freedom", "Friendship", "Fun", "Generosity", "Growth", "Health", "Honesty", "Hope", "Humility", "Independence", "Inner Peace", "Integrity", "Joy", "Justice", "Kindness", "Knowledge", "Leadership", "Learning", "Legacy", "Loyalty", "Love", "Meaning", "Music", "Nature", "Open-mindedness", "Order", "Patience", "Peace", "Personal Growth", "Play", "Pleasing God", "Pleasure", "Privacy", "Purpose", "Reliability", "Respect", "Responsibility", "Safety", "Self-Discipline", "Self-Expression", "Self-Respect", "Service", "Simplicity", "Spirituality", "Stability", "Stillness", "Strength", "Success", "Support", "Teaching", "Tradition", "Trust", "Truth", "Understanding", "Variety", "Vitality", "Wisdom", "Wonder", "Work"];
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"], KEY="full_bucket_v32_test";
+const LIB={
+"Inner Peace":["Sit by water","Fishing","Quiet walk","Prayer or reflection","Listen to music","Garden","Read somewhere quiet","Spend time outdoors"],
+"Family":["Share a meal","Call or visit family","Attend a child's activity","Teach a skill","Work on a project together","Take a drive together","Plan one-on-one time","Family outing"],
+"Faith":["Prayer","Read scripture","Worship service","Bible study","Serve someone","Faith community gathering","Quiet reflection","Mentor someone"],
+"Pleasing God":["Prayer","Scripture","Worship","Serve someone","Practice generosity","Mentor someone","Faith fellowship","Time in reflection"],
+"Creativity":["Restore a vehicle","Build or fabricate something","Woodworking","Play music","Photography","Cook something new","Draw or paint","Garden or landscape"],
+"Connection":["Call an old friend","Coffee with someone","Join a club or group","Attend live music","Hunt or fish with someone","Volunteer with others","Share a meal","Visit family"],
+"Adventure":["Hunting","Fishing","Camping","Road trip","Motorcycle ride","Off-road outing","Explore a new place","Attend a race or sporting event"],
+"Service":["Mentor an apprentice","Volunteer your trade skills","Help a neighbor","Coach or teach","Church service project","Community volunteer project","Visit someone who could use company","Repair something for someone"],
+"Learning":["Learn a new trade skill","Take a class","Read or listen to a book","Bible study","Learn an instrument","Study history","Learn cooking","Visit a museum or demonstration"],
+"Fun":["Live music","Car show or racing","Hunting or fishing","Game night","Sports","Cookout","Day trip","Hobby project"],
+"Nature":["Fishing","Hiking or walking","Gardening","Camping","Sit by water","Birdwatching","Hunting","Outdoor photography"],
+"Music":["Listen to music","Play an instrument","Attend live music","Jam with others","Learn a song","Join a music group","Create a playlist","Practice rhythm"],
+"Health":["Walk","Swim","Bike","Stretch","Prepare a good meal","Outdoor activity","Recreational sport","Rest and recovery"],
+"Friendship":["Call a friend","Meet for coffee","Go fishing together","Attend an event together","Work on a project","Cookout","Road trip","Regular meetup"],
+"Purpose":["Mentor someone","Volunteer","Build something meaningful","Teach what you know","Work toward a personal project","Serve your community","Create something","Learn something challenging"]
+};
+const GENERIC=["Spend time outdoors","Build or repair something","Listen to or make music","Learn something new","Spend time with someone important","Volunteer or help someone","Take quiet time alone","Attend a local event","Work on a hobby","Take a short trip or explore"];
+function fresh(){return{screen:"welcome",rounds:{all:[],r40:[],r20:[],r10:[],final:[]},currentRound:"all",custom:[],core:[],defs:{},activities:[],basics:{},work:{},blocks:[],placed:[],reflections:[],moments:true,day:0}}
+let state=load(), currentRound=state.currentRound||"all";
+function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){return fresh()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));let r=document.getElementById("resumeBtn");if(r)r.classList.toggle("hidden",!state.screen||state.screen==="welcome")}
+const P={welcome:0,about:2,values:10,custom:20,finalValues:42,define:50,activities:62,scheduleIntro:68,basics:72,work:76,routine:80,commitments:84,schedule:92,home:100,reflections:100};
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.getElementById("bar").style.width=(P[id]||0)+"%";state.screen=id;save();window.scrollTo(0,0)}
+function startFresh(){state=fresh();save();showRound("all")}
+function resume(){let s=state.screen||"welcome";if(s==="values")showRound(state.currentRound);else if(s==="activities"){renderActivities();show(s)}else if(s==="schedule")buildSchedule();else if(s==="home")showHome();else if(s==="reflections"){renderReflections();show(s)}else show(s)}
+function sourceFor(r){if(r==="all")return [...VALUES,...state.custom];if(r==="r40")return state.rounds.all;if(r==="r20")return state.rounds.r40;if(r==="r10")return state.rounds.r20;if(r==="final")return state.core;return VALUES}
+function targetFor(r){return {all:40,r40:20,r20:10,r10:3,final:3}[r]}
+function showRound(r){
+ currentRound=r; state.currentRound=r; save();
+ if(r==="final"){renderFinal();show("finalValues");return}
+ const src=sourceFor(r), chosen=state.rounds[r]||[];
+ const info={
+  all:["Start broad.","What matters to you?","Tap the things that feel important. Don't overthink it. Choose up to 40."],
+  r40:["Round 2","Which 20 matter most?","Nothing is selected yet. Tap exactly 20 of these 40 to carry forward."],
+  r20:["Round 3","Which 10 stay?","Nothing is selected yet. Tap exactly 10 of these 20 to carry forward."],
+  r10:["Final round","What belongs at the center?","Nothing is selected yet. Choose at least 3. Three is a useful target, not a rule."]
+ }[r];
+ document.getElementById("roundEye").textContent=info[0];
+ document.getElementById("roundTitle").textContent=info[1];
+ document.getElementById("roundText").textContent=info[2];
+ renderValueCards(src,chosen);
+ updateCount();
+ show("values");
+}
+function renderValueCards(src,chosen){
+ const box=document.getElementById("valueCards");
+ box.innerHTML="";
+ src.forEach(v=>{
+  const b=document.createElement("button");
+  b.type="button"; b.className="card"+(chosen.includes(v)?" on":" off");
+  b.textContent=v;
+  b.addEventListener("click",()=>toggleValue(v));
+  box.appendChild(b);
+ });
+}
+function toggleValue(v){
+ let a=[...(state.rounds[currentRound]||[])];
+ const max=targetFor(currentRound);
+ const i=a.indexOf(v);
+ if(i>=0){a.splice(i,1)}
+ else{
+  if(currentRound!=="r10" && a.length>=max){
+   moment("You've got your "+max,"To choose a different one, tap one of your selected values first.");
+   return;
+  }
+  a.push(v);
+ }
+ state.rounds[currentRound]=a; save();
+ renderValueCards(sourceFor(currentRound),a); updateCount();
+}
+function updateCount(){
+ const n=(state.rounds[currentRound]||[]).length, t=targetFor(currentRound);
+ const btn=document.getElementById("roundContinue");
+ document.getElementById("roundCount").textContent=`Selected: ${n} • ${currentRound==="r10"?"Aim for at least 3":"Target: "+t}`;
+ const ready=currentRound==="all" ? n>=3 : currentRound==="r40" ? n===20 : currentRound==="r20" ? n===10 : n>=3;
+ btn.disabled=!ready;
+ btn.style.opacity=ready?"1":".45";
+}
+function advanceRound(){
+ const n=(state.rounds[currentRound]||[]).length;
+ if(currentRound==="all"){renderCustom();show("custom");return}
+ if(currentRound==="r40"){
+  if(n!==20)return;
+  state.rounds.r20=[]; save();
+  moment("Whew. That one was tougher.","A lot of things matter. You're not saying the others don't matter—we're discovering which ones matter most to you right now.",()=>showRound("r20")); return;
+ }
+ if(currentRound==="r20"){
+  if(n!==10)return;
+  state.rounds.r10=[]; save();
+  moment("Okay. Now I'm asking you to be a little ruthless.","You're down to 10. The next step isn't about what sounds admirable. It's about what really belongs near the center of your life right now.",()=>showRound("r10")); return;
+ }
+ if(currentRound==="r10"){
+  if(n<3)return;
+  state.core=[...state.rounds.r10]; save();
+  moment("Nobody's grading this thing.","This is a snapshot, not a permanent verdict. You can come back and look again later.",()=>{renderFinal();show("finalValues")});
+ }
+}
+function backRound(){
+ if(currentRound==="all")show("welcome");
+ else if(currentRound==="r40")show("custom");
+ else if(currentRound==="r20")showRound("r40");
+ else if(currentRound==="r10")showRound("r20");
+}
+let modalNext=null;
+function moment(t,x,next=null){
+ if(!state.moments){if(next)next();return}
+ document.getElementById("kmTitle").textContent=t;
+ document.getElementById("kmText").textContent=x;
+ modalNext=next;
+ document.getElementById("kennyModal").classList.add("show");
+}
+function closeModal(){
+ document.getElementById("kennyModal").classList.remove("show");
+ const n=modalNext; modalNext=null; if(n)n();
+}
+function suppressMoments(){state.moments=false;save();closeModal()}
+function renderCustom(){customList.innerHTML=state.custom.map(x=>`<div class="panel"><strong>${esc(x)}</strong></div>`).join("")}
+function addCustom(){let x=customInput.value.trim();if(!x)return;if(!state.custom.includes(x)){state.custom.push(x);if(!state.rounds.all.includes(x)&&state.rounds.all.length<40)state.rounds.all.push(x)}customInput.value="";save();renderCustom()}
+function beginNarrowing(){
+ const n=state.rounds.all.length;
+ if(n>20){state.rounds.r40=[];save();showRound("r40");}
+ else if(n>10){state.rounds.r40=[...state.rounds.all];state.rounds.r20=[];save();showRound("r20");}
+ else{state.rounds.r40=[...state.rounds.all];state.rounds.r20=[...state.rounds.all];state.rounds.r10=[];save();showRound("r10");}
+}
+function renderFinal(){finalList.innerHTML=state.core.map(v=>`<div class="panel"><strong style="font-size:21px">${esc(v)}</strong></div>`).join("")}
+function renderDefinitions(){definitionBox.innerHTML=state.core.map(v=>`<div class="panel"><h2>${esc(v)}</h2><textarea data-def="${escAttr(v)}" placeholder="In my life, this means...">${esc(state.defs[v]||"")}</textarea></div>`).join("")}
+function saveDefinitions(){document.querySelectorAll("[data-def]").forEach(x=>state.defs[x.dataset.def]=x.value.trim());save();renderActivities();show("activities")}
+function suggestions(v){let exact=LIB[v]||[];let lower=v.toLowerCase();let extra=[];
+ if(/peace|calm|still|balance|content/.test(lower))extra=LIB["Inner Peace"];
+ else if(/family|love|belong/.test(lower))extra=LIB["Family"];
+ else if(/faith|spirit|god/.test(lower))extra=LIB["Faith"];
+ else if(/creativ|expression|beauty/.test(lower))extra=LIB["Creativity"];
+ else if(/connect|friend|community/.test(lower))extra=LIB["Connection"];
+ else if(/adventure|variety|wonder|discovery/.test(lower))extra=LIB["Adventure"];
+ else if(/service|contribution|generosity|teaching/.test(lower))extra=LIB["Service"];
+ else if(/learn|knowledge|education|growth|curiosity|wisdom/.test(lower))extra=LIB["Learning"];
+ return [...new Set([...exact,...extra,...GENERIC])].slice(0,12)
+}
+function renderActivities(){activityValues.innerHTML=state.core.map(v=>{let list=state.activities.filter(a=>a.values.includes(v));return `<div class="panel"><h2>${esc(v)}</h2>${state.defs[v]?`<p class="small">${esc(state.defs[v])}</p>`:""}${list.map(activityHTML).join("")}<button class="btn ghost small" onclick='showLibrary(${JSON.stringify(v)})'>EXPLORE POSSIBILITIES</button><button class="btn secondary small" onclick='activityForm(${JSON.stringify(v)})'>+ ADD MY OWN</button><div id="form-${safe(v)}"></div><div id="lib-${safe(v)}"></div></div>`}).join("")}
+function activityHTML(a){return `<div class="activity"><strong>${esc(a.name)}</strong><div class="small">${durLabel(a.minutes)} • ${esc(a.frequency)} • supports ${a.values.map(esc).join(", ")}</div><button class="btn secondary small" onclick="removeActivity(${a.id})">REMOVE</button></div>`}
+function durationOptions(){let a=[[15,"15 min"],[30,"30 min"],[45,"45 min"],[60,"1 hour"],[90,"1½ hours"],[120,"2 hours"],[150,"2½ hours"],[180,"3 hours"],[240,"Half day"],[480,"Full day"],["custom","Custom"]];return a.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join("")}
+function activityForm(v,name=""){document.getElementById("form-"+safe(v)).innerHTML=`<label class="label">Activity</label><input id="an-${safe(v)}" value="${escAttr(name)}" placeholder="Lake, music, prayer, call my daughter..."><label class="label">Total realistic time</label><select id="am-${safe(v)}" onchange='customDur(${JSON.stringify(v)})'>${durationOptions()}</select><input id="ac-${safe(v)}" class="hidden" type="number" min="5" step="5" placeholder="Custom minutes"><label class="label">How often would you like room for it?</label><select id="af-${safe(v)}"><option>Daily</option><option>A few times a week</option><option>Weekly</option><option>Every two weeks</option><option>Monthly</option><option>Whenever it fits</option></select><label class="label">Supports another core value too?</label><div class="chips">${state.core.filter(x=>x!==v).map(x=>`<label class="chip"><input style="width:auto;margin:0 4px 0 0" type="checkbox" class="cross-${safe(v)}" value="${escAttr(x)}">${esc(x)}</label>`).join("")}</div><button class="btn small" onclick='saveActivity(${JSON.stringify(v)})'>SAVE THIS</button>`}
+function customDur(v){document.getElementById("ac-"+safe(v)).classList.toggle("hidden",document.getElementById("am-"+safe(v)).value!=="custom")}
+function saveActivity(v){let n=document.getElementById("an-"+safe(v)).value.trim();if(!n)return;let d=document.getElementById("am-"+safe(v)).value;let mins=d==="custom"?(+document.getElementById("ac-"+safe(v)).value||30):+d;let vals=[v,...[...document.querySelectorAll(".cross-"+safe(v)+":checked")].map(x=>x.value)];state.activities.push({id:Date.now(),name:n,minutes:mins,frequency:document.getElementById("af-"+safe(v)).value,values:[...new Set(vals)]});save();renderActivities()}
+function removeActivity(id){state.activities=state.activities.filter(a=>a.id!==id);state.placed=state.placed.filter(p=>p.activityId!==id);save();renderActivities()}
+function showLibrary(v){let box=document.getElementById("lib-"+safe(v));box.innerHTML=`<p><strong>Anything here sound like you?</strong></p><div class="libraryGrid">${suggestions(v).map(s=>`<button class="suggestion" onclick='activityForm(${JSON.stringify(v)},${JSON.stringify(s)})'>${esc(s)}</button>`).join("")}</div><button class="btn ghost small" onclick='searchIdea(${JSON.stringify(v)})'>HELP ME FIND SOMETHING LOCAL</button><div id="search-${safe(v)}"></div>`}
+function searchIdea(v){let el=document.getElementById("search-"+safe(v));el.innerHTML=`<label class="label">City or ZIP — optional and only used in the phrase below</label><input id="loc-${safe(v)}" placeholder="Example: 78063"><label class="label">What kind of thing sounds interesting?</label><input id="interest-${safe(v)}" placeholder="live music, volunteer build, car show..."><button class="btn small" onclick='makeQuery(${JSON.stringify(v)})'>CREATE A SEARCH PHRASE</button><div id="q-${safe(v)}"></div>`}
+function makeQuery(v){let loc=document.getElementById("loc-"+safe(v)).value.trim(),i=document.getElementById("interest-"+safe(v)).value.trim()||"activities";let q=`${i} near ${loc||"me"}`;document.getElementById("q-"+safe(v)).innerHTML=`<div class="tip"><strong>Search phrase:</strong><br>${esc(q)}<br><span class="small">Full Bucket has not included your name, reflections, value history or schedule.</span></div>`}
+function loadBasics(){wakeWeek.value=state.basics.wakeWeek||"07:00";sleepWeek.value=state.basics.sleepWeek||"22:00";wakeEnd.value=state.basics.wakeEnd||"09:00";sleepEnd.value=state.basics.sleepEnd||"23:00"}
+function saveBasics(){state.basics={wakeWeek:wakeWeek.value,sleepWeek:sleepWeek.value,wakeEnd:wakeEnd.value,sleepEnd:sleepEnd.value};save();show("work")}
+function saveWork(){state.work={pattern:workPattern.value,start:workStart.value,end:workEnd.value,commute:+commuteMin.value,lunch:lunchKind.value};save();renderBlocks("routineList","routine");show("routine")}
+function renderBlocks(id,type){let arr=state.blocks.filter(b=>b.type===type||type==="routine"&&b.type==="flexible");document.getElementById(id).innerHTML=arr.map(b=>`<div class="panel ${b.type}"><strong>${esc(b.label)}</strong><div class="small">${b.days.join(", ")} • ${fmt(b.start)}–${fmt(b.end)} • ${b.type==="flexible"?"Flexible":"Committed"}</div><button class="btn secondary small" onclick="removeBlock(${b.id},'${id}','${type}')">REMOVE</button></div>`).join("")}
+function addBlockForm(id,type){let host=document.getElementById(id);let x=document.createElement("div");x.className="panel";let uid=Date.now();x.innerHTML=`<label class="label">What is it?</label><input id="bl-${uid}" placeholder="Quiet time, dinner, child's practice..."><div class="row"><div><label class="label">Starts</label><input id="bs-${uid}" type="time"></div><div><label class="label">Ends</label><input id="be-${uid}" type="time"></div></div><label class="label">Which days?</label><div class="chips">${DAYS.map(d=>`<label class="chip"><input type="checkbox" style="width:auto;margin:0 3px" class="bd-${uid}" value="${d}">${d}</label>`).join("")}</div>${type==="routine"?`<label class="label">Is this time flexible?</label><select id="bt-${uid}"><option value="routine">No — it's part of my normal routine</option><option value="flexible">Yes — I could move/reconsider it</option></select>`:""}<button class="btn small" onclick="saveBlock(${uid},'${id}','${type}')">SAVE</button>`;host.prepend(x)}
+function saveBlock(uid,id,type){let label=document.getElementById("bl-"+uid).value.trim(),start=document.getElementById("bs-"+uid).value,end=document.getElementById("be-"+uid).value,days=[...document.querySelectorAll(".bd-"+uid+":checked")].map(x=>x.value);if(!label||!start||!end||!days.length)return alert("Add a name, start/end time and at least one day.");let t=type==="routine"?document.getElementById("bt-"+uid).value:type;state.blocks.push({id:uid,label,start,end,days,type:t});save();renderBlocks(id,type)}
+function removeBlock(id,host,type){state.blocks=state.blocks.filter(b=>b.id!==id);save();renderBlocks(host,type)}
+function mins(t){let [h,m]=(t||"00:00").split(":").map(Number);return h*60+m}
+function fmt(t){let [h,m]=t.split(":").map(Number),a=h>=12?"PM":"AM";return `${h%12||12}:${String(m).padStart(2,"0")} ${a}`}
+function durLabel(m){if(m===240)return"Half day";if(m===480)return"Full day";if(m<60)return m+" min";if(m%60===0)return(m/60)+" hour"+(m===60?"":"s");return Math.floor(m/60)+"½ hours"}
+function baseIntervals(di){
+ let day=DAYS[di],week=di<5,w=state.basics||{},out=[];
+ let wake=mins(week?(w.wakeWeek||"07:00"):(w.wakeEnd||"09:00")),sleep=mins(week?(w.sleepWeek||"22:00"):(w.sleepEnd||"23:00"));
+ out.push({start:0,end:wake,label:"Sleep",type:"sleep"},{start:sleep,end:1440,label:"Sleep",type:"sleep"});
+ let wk=state.work||{};if(week&&wk.pattern&&wk.pattern!=="none"&&wk.pattern!=="variable"){
+  let s=mins(wk.start||"09:00"),e=mins(wk.end||"18:00"),c=wk.pattern==="home"?0:(wk.commute||0);
+  if(c)out.push({start:s-c,end:s,label:"Commute",type:"commute"});
+  out.push({start:s,end:e,label:"Work",type:"work"});
+  if(c)out.push({start:e,end:e+c,label:"Commute",type:"commute"});
+  if(wk.lunch&&wk.lunch!=="none"){let len=wk.lunch.includes("30")?30:60,ls=Math.floor((s+e)/2/15)*15-len/2;out.push({start:ls,end:ls+len,label:wk.lunch.startsWith("free")?"Lunch — available":"Lunch / break — committed",type:wk.lunch.startsWith("free")?"open":"work"})}
+ }
+ state.blocks.filter(b=>b.days.includes(day)).forEach(b=>out.push({start:mins(b.start),end:mins(b.end),label:b.label,type:b.type}));
+ state.placed.filter(p=>p.day===di).forEach(p=>out.push({start:p.start,end:p.start+p.minutes,label:p.name,type:"bucket",activityId:p.activityId}));
+ return out
+}
+function at(di,t){let arr=baseIntervals(di).filter(x=>t>=x.start&&t<x.end);if(!arr.length)return{label:"Open",type:"open"};let pri={bucket:9,fixed:8,routine:7,flexible:6,commute:5,work:4,sleep:3,open:0};return arr.sort((a,b)=>(pri[b.type]||0)-(pri[a.type]||0))[0]}
+function buildSchedule(){state.day=state.day||0;renderSchedule();show("schedule")}
+function renderSchedule(){
+ dayTabs.innerHTML=DAYS.map((d,i)=>`<button class="daytab ${i===state.day?"on":""}" onclick="state.day=${i};save();renderSchedule()">${d}</button>`).join("");
+ let rows="";for(let t=300;t<1440;t+=30){let x=at(state.day,t);rows+=`<div class="slot" data-time="${t}" ondragover="allowDrop(event)" ondrop="dropActivity(event,${t})"><div class="time">${fmtMin(t)}</div><div class="block ${x.type}" onclick="slotTap(${t})"><strong>${esc(x.label)}</strong>${x.type==="open"?"<span>Available</span>":""}</div></div>`}
+ timeline.innerHTML=rows;
+ let open=0,flex=0;for(let d=0;d<7;d++)for(let t=mins(d<5?(state.basics.wakeWeek||"07:00"):(state.basics.wakeEnd||"09:00"));t<mins(d<5?(state.basics.sleepWeek||"22:00"):(state.basics.sleepEnd||"23:00"));t+=30){let x=at(d,t);if(x.type==="open")open+=30;if(x.type==="flexible")flex+=30}
+ scheduleSummary.innerHTML=`Based on what you entered, your week shows about <strong>${Math.round(open/60*10)/10} hours of open time</strong>${flex?` and <strong>${Math.round(flex/60*10)/10} hours you marked flexible</strong>`:""}. That's arithmetic, not a judgment.`;
+ activityTray.innerHTML=`<strong>Things that fill my bucket</strong><div class="small">Drag one onto an open block. On touch screens, you can also tap an activity, then tap an open time.</div>${state.activities.length?state.activities.map(a=>`<button draggable="true" ondragstart="dragActivity(event,${a.id})" onclick="selectActivity(${a.id})" class="dragcard">${esc(a.name)} · ${durLabel(a.minutes)}</button>`).join(""):"<p class='small'>Go back to What Fills My Bucket and add an activity first.</p>"}`
+}
+function fmtMin(t){let h=Math.floor(t/60),m=t%60,a=h>=12?"PM":"AM";return`${h%12||12}:${String(m).padStart(2,"0")} ${a}`}
+let selectedActivity=null;
+function selectActivity(id){selectedActivity=id;document.querySelectorAll(".dragcard").forEach(b=>b.style.outline="");event.currentTarget.style.outline="3px solid #245a45"}
+function slotTap(t){if(!selectedActivity)return;placeAt(selectedActivity,state.day,t)}
+function dragActivity(e,id){e.dataTransfer.setData("text/plain",id)}
+function allowDrop(e){e.preventDefault()}
+function dropActivity(e,t){e.preventDefault();placeAt(+e.dataTransfer.getData("text/plain"),state.day,t)}
+function canFit(di,start,minutes,allowFlexible=false){for(let t=start;t<start+minutes;t+=15){let x=at(di,t);if(x.type!=="open"&&!(allowFlexible&&x.type==="flexible"))return false}return start+minutes<=1440}
+function placeAt(id,di,start){let a=state.activities.find(x=>x.id===id);if(!a)return;if(!canFit(di,start,a.minutes)){moment("That doesn't fit there yet.",`${a.name} needs ${durLabel(a.minutes)}. That block isn't fully open. Try another opening—or tap HELP ME MAKE ROOM and we'll look at possibilities.`);return}state.placed=state.placed.filter(p=>!(p.day===di&&rangesOverlap(p.start,p.start+p.minutes,start,start+a.minutes)));state.placed.push({activityId:id,name:a.name,day:di,start,minutes:a.minutes});selectedActivity=null;save();renderSchedule()}
+function rangesOverlap(a,b,c,d){return a<d&&c<b}
+function coach(){if(!state.activities.length){moment("First we need something of yours to work with.","Go back to What Fills My Bucket and choose at least one activity that sounds like you.");return}
+ let candidates=[];state.activities.forEach(a=>{for(let d=0;d<7;d++)for(let t=360;t<1320;t+=15)if(canFit(d,t,a.minutes)&&!candidates.some(c=>c.a.id===a.id)){candidates.push({a,d,t,kind:"open"});break}});
+ if(candidates.length){let c=candidates[0];moment("There is room for something you chose.",`${c.a.name} needs ${durLabel(c.a.minutes)}. Your schedule shows an opening ${DAYS[c.d]} around ${fmtMin(c.t)}. I'm not putting it there for you. If that time feels right, you can place it yourself.`);return}
+ let flex=[];state.activities.forEach(a=>{for(let d=0;d<7;d++)for(let t=360;t<1320;t+=15)if(canFit(d,t,a.minutes,true)&&!canFit(d,t,a.minutes,false)&&!flex.some(c=>c.a.id===a.id)){flex.push({a,d,t});break}});
+ if(flex.length){let c=flex[0];moment("We may have found something worth looking at.",`${c.a.name} needs ${durLabel(c.a.minutes)}. There isn't a completely open block that size, but ${DAYS[c.d]} around ${fmtMin(c.t)} includes time you marked flexible. Full Bucket isn't telling you what should go. It's showing you a place you could reconsider if you want to make an appointment with yourself.`);return}
+ moment("That's a pretty full schedule.","Based on what you entered, there isn't an obvious opening large enough for the activities you've chosen. Full Bucket isn't here to criticize that or pretend you have time you don't. You can edit the schedule, explore a smaller activity, or leave things exactly as they are.")
+}
+function showHome(){renderHome();show("home")}
+function renderHome(){homeSummary.innerHTML=`<div class="panel"><strong>What matters right now</strong><div class="chips">${state.core.map(v=>`<span class="chip on">${esc(v)}</span>`).join("")}</div></div><div class="panel"><strong>Things I chose for my bucket</strong><p>${state.activities.length?state.activities.map(a=>esc(a.name)).join(" • "):"Nothing added yet."}</p></div>`}
+function saveReflection(){let x=reflectionText.value.trim();if(!x)return;state.reflections.push({date:new Date().toISOString(),text:x});reflectionText.value="";save();renderReflections()}
+function renderReflections(){reflectionList.innerHTML=state.reflections.slice().reverse().map(r=>`<div class="reflection"><div class="small">${new Date(r.date).toLocaleString()}</div>${esc(r.text)}</div>`).join("")||"<div class='tip'>No reflections yet. That's completely okay.</div>"}
+function checkAgain(){if(confirm("Start a fresh look at your values? Your activities, schedule and reflections will stay saved.")){state.rounds={all:[],r40:[],r20:[],r10:[],final:[]};state.core=[];save();showRound("all")}}
+function downloadBackup(){let b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="My-Full-Bucket-v3.2-Backup.json";a.click();URL.revokeObjectURL(a.href)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function escAttr(s){return esc(s)}function safe(s){return String(s).replace(/[^a-z0-9]/gi,"_")}
+save();
+</script></body></html>
